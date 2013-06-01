@@ -9,8 +9,8 @@ ul { list-style: none; }
 #recordingslist audio { display: block; margin-bottom: 10px; }
 
 #record-btn {
-  height: 16px;
-  width: 16px;
+  height: 128px;
+  width: 128px;
   border: 1px solid black;
   color: red;
   background-color: red;

@@ -49,7 +49,7 @@ function showFile(data) {
   recorder && recorder.exportWAV(function(blob) {
     console.log(blob);
     var url = URL.createObjectURL(blob);
-    var li = document.createElement('li');
+    var recording = $("#recording");
     var au = document.createElement('audio');
     var btn = document.createElement('button');
     
@@ -60,12 +60,12 @@ function showFile(data) {
     data.recording = blob;
     btn.onclick = function() {
       Files.insert(data)
-      btn.hide();
+      recording.empty();
       alert("Submitted");
     };
-    li.appendChild(au);
-    li.appendChild(btn);
-    recordingslist.appendChild(li);
+
+    recording.append(au);
+    recording.append(btn);
   });
 }
 
