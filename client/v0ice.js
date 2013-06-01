@@ -1,3 +1,5 @@
+Files = new Meteor.Collection("files");
+
 function __log(e, data) {
   console.log("\n" + e + " " + (data || ''));
 }
@@ -27,25 +29,6 @@ function startUserMedia(stream) {
   // __log('Recorder initialised.');
 }
 
-function startRecording(button) {
-  recorder && recorder.record();
-  button.disabled = true;
-  button.nextElementSibling.disabled = false;
-  __log('Recording...');
-}
-
-function stopRecording(button) {
-  recorder && recorder.stop();
-  button.disabled = true;
-  button.previousElementSibling.disabled = false;
-  __log('Stopped recording.');
-  
-  // create WAV download link using audio data blob
-  createDownloadLink();
-  
-  recorder.clear();
-}
-
 function createDownloadLink() {
   recorder && recorder.exportWAV(function(blob) {
     var url = URL.createObjectURL(blob);
@@ -57,10 +40,11 @@ function createDownloadLink() {
     au.src = url;
     hf.href = url;
     hf.download = new Date().toISOString() + '.wav';
+    // Recorder.forceDownload(blob, "test.wav");
     hf.innerHTML = hf.download;
     li.appendChild(au);
     li.appendChild(hf);
-    recordingslist.appendChild(li);
+    // recordingslist.appendChild(li);
   });
 }
 
@@ -96,9 +80,25 @@ Template.mic.events({
       console.log("record started");
     } else {
       recorder.stop();
-      createDownloadLink();
+      file = {
+        name: ".wav",
+        url: document.URL,
+        timestamp: (new Date()).getTime()
+      }
+      console.log(file);
+      Meteor.call("addFile", file, function(err, result) {
+          if (result) {
+              console.log("Successfully added new record with auto_inc id " + result);
+          }
+      });
+      // createDownloadLink();
       recording_state = false;
       console.log("record stopped");
     } 
   }
 });
+
+// show files 
+Template.files.files = function () {
+  return Files.find({}, {limit: 5, sort: {name: 1}});
+};

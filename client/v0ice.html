@@ -3,15 +3,42 @@
 </head>
 
 <body>
+	<div id="menu">
+    <nav>
+      <ul class="nav nav-pills">
+        <li><a href="">Record</a></li>
+        <li><a href="">List</a></li>
+      </ul>
+    </nav>
+	</div>
+
   <div class="container">
     {{> mic}}
-    
-  <ul id="recordingslist"></ul>
-  </div>
+		{{> files}}
+	  </div>
 </body>
 
 <template name="mic">
   <div class="mic-content">
     <div id="record-btn" class="record-started"></div>
+  </div>
+</template>
+
+<template name="files">
+  <div class="files">
+		<table class="table table-condensed">
+			<tr>
+				<th>ID</th>
+				<th>URL</th>
+				<th>TIME</th>
+			</tr>
+	    {{#each files}}
+				<tr>
+					<td>{{id}}</td>
+					<td>{{url}}</td>
+					<td>{{timestamp}}</td>
+				</tr>
+	    {{/each}}
+		</table>
   </div>
 </template>
