@@ -10,35 +10,61 @@
         <li><a href="">List</a></li>
       </ul>
     </nav>
-	</div>
+  </div>
 
   <div class="container">
-    {{> mic}}
-		{{> files}}
-	  </div>
+    {{> body}}
+  </div>
 </body>
 
-<template name="mic">
-  <div class="mic-content">
-    <div id="record-btn" class="record-started"></div>
+<template name="body">
+  {{renderPage layoutName}}
+</template>
+
+<template name="landing">
+  <div class="row">
+    <div class="span9">
+      <div class="span3 offset3">
+        {{> record}}
+        {{> hear}}
+        {{> files}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="hear">
+  <div class="hear-content">
+    <p>Hear</p>
+    <div class="foobar">
+
+    </div>
+  </div>
+</template>
+
+<template name="record">
+  <div class="record-content">
+    <p>Microphone</p>
+    <div id="record-btn" class="span4 record-started"></div>
+    <ul id="recordingslist"></ul>
   </div>
 </template>
 
 <template name="files">
   <div class="files">
-		<table class="table table-condensed">
-			<tr>
-				<th>ID</th>
-				<th>URL</th>
-				<th>TIME</th>
-			</tr>
-	    {{#each files}}
-				<tr>
-					<td>{{id}}</td>
-					<td>{{url}}</td>
-					<td>{{timestamp}}</td>
-				</tr>
-	    {{/each}}
-		</table>
-  </div>
+    <table class="table table-condensed">
+     <tr>
+      <th>ID</th>
+      <th>URL</th>
+      <th>TIME</th>
+    </tr>
+    {{#each files}}
+    <tr>
+     <td>{{id}}</td>
+     <td>{{url}}</td>
+     <td>{{timestamp}}</td>
+   </tr>
+   {{/each}}
+ </table>
+</div>
 </template>

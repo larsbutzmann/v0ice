@@ -6,6 +6,8 @@ body {
 
 ul { list-style: none; }
 
+#recordingslist audio { display: block; margin-bottom: 10px; }
+
 #record-btn {
   height: 16px;
   width: 16px;
@@ -14,15 +16,9 @@ ul { list-style: none; }
   background-color: red;
 }
 
-.mic-content {
-  float: none;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
+.record-content { }
+.hear-content { }
 
 .record-started {
   border-radius: 50%;
 }
-
-#recordingslist audio { display: block; margin-bottom: 10px; }
