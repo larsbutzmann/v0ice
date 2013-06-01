@@ -3,31 +3,40 @@
 </head>
 
 <body>
-	<div id="menu">
-    <nav>
-      <ul class="nav nav-pills">
-        <li><a href="">Record</a></li>
-        <li><a href="">List</a></li>
-      </ul>
-    </nav>
-  </div>
-
+  {{> navi}}
   <div class="container">
     {{> body}}
   </div>
 </body>
 
+<template name="navi">
+  <div class="row">
+    <div class="span9">
+      <div class="span3 offset2">
+        <div id="menu">
+          <nav>
+            <div class="input-append">
+              <input class="span2" id="appendedInputButtons" type="text">
+              <button id="btn-list" class="btn" type="button">Hear</button>
+              <button id="btn-record" class="btn" type="button">Record</button>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <template name="body">
   {{renderPage layoutName}}
 </template>
 
-<template name="landing">
+<template name="home">
   <div class="row">
     <div class="span9">
       <div class="span3 offset3">
         {{> record}}
         {{> hear}}
-        {{> files}}
       </div>
     </div>
   </div>
@@ -50,9 +59,9 @@
   </div>
 </template>
 
-<template name="files">
+<template name="fileIndex">
   <div class="files">
-    <table class="table table-condensed">
+    <table class="table table-bordered">
      <tr>
       <th>ID</th>
       <th>URL</th>

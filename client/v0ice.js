@@ -1,20 +1,29 @@
-Files = new Meteor.Collection("files");
-
-Template.files.files = function () {
-  return Files.find({}, {limit: 5, sort: {name: 1}});
-};
+Template.navi.events({
+  'click #btn-record': function(){
+    Meteor.Router.to(Meteor.Router.recordPath());
+  },
+  'click #btn-list': function(){
+    Meteor.Router.to(Meteor.Router.listPath());
+  },
+});
 
 Meteor.Router.add({
-  '/': 'landingPage'
+  '/': 'home',
+  '/list': 'list',
+  '/record': 'record'
 });
 
 Template.body.helpers({
   layoutName: function() {
     switch (Meteor.Router.page()) {
-      case 'landingPage':
-        return 'landing';
+      case 'home':
+        return 'home';
+      case 'list':
+        return 'fileIndex';
+      case 'record':  
+        return 'record';
       default:
-        return 'landing';
+        return 'home';
     }
   }
 });
