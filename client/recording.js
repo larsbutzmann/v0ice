@@ -48,7 +48,7 @@ function stopRecording(button) {
 function showFile(data) {
   recorder && recorder.exportWAV(function(blob) {
     console.log(blob);
-    var url = URL.createObjectURL(blob);
+    var url = String(URL.createObjectURL(blob));
     var recording = $("#recording");
     var au = document.createElement('audio');
     var btn = document.createElement('button');
@@ -56,12 +56,15 @@ function showFile(data) {
     au.controls = true;
     au.src = url;
 
+    console.log(url);
+
     btn.innerHTML = "Submit";
     data.recording = blob;
+    data.path = url;
     btn.onclick = function() {
       Files.insert(data)
       recording.empty();
-      alert("Submitted");
+      alert("Done");
     };
 
     recording.append(au);
@@ -104,7 +107,6 @@ Template.record.events({
         recorder.stop();
         meta_data = {
           user_id: 1,
-          name: guid() + ".wav",
           url: document.URL,
           timestamp: (new Date()).getTime()
         }
@@ -118,14 +120,3 @@ Template.record.events({
     }
   }
 });
-
-function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-             .toString(16)
-             .substring(1);
-};
-
-function guid() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-         s4() + '-' + s4() + s4() + s4();
-}
