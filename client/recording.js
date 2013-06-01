@@ -32,6 +32,8 @@ function showFile(data) {
     var url = String(URL.createObjectURL(blob));
     var recording = $("#recording");
     var au = document.createElement('audio');
+
+    Recorder.forceDownload(blob);
     
     au.controls = true;
     au.src = url;
