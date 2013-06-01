@@ -104,6 +104,7 @@ function showFile(data) {
     $("#submit-file")[0].onclick = function() {
       Files.insert(data)
       recording.empty();
+      $("#stop-btn").show();
     };
 
     recording.append(au);
@@ -145,7 +146,6 @@ Template.record.events({
     }
   },
   'click #stop-btn' : function () {
-    // template data, if any, is available in 'this'
     if (recorder) {
       if (recording_state === true) {
         recorder.stop();
@@ -160,6 +160,19 @@ Template.record.events({
         console.log("record stopped");
         $("#stop-btn").hide();
       }
+    }
+  },
+  'click #cancel-submit' : function () {
+    if (recorder) {
+      if (recording_state === true) {
+        recorder.stop();
+        recording_state = false;
+        console.log("record stopped");
+      }
+      recorder.clear();
+      $("#recording").empty();
+      $("#stop-btn").show();      
+      console.log($("#recording"));
     }
   }
 });
