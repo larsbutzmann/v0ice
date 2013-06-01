@@ -1,21 +1,17 @@
 /* CSS declarations go here */
 
+.content {
+  
+}
+
 #record-btn {
-}
-
-.record-start {
   height: 16px;
   width: 16px;
-  border: 1px solid;
+  border: 1px solid black;
+  color: red;
+  background-color: red;
+}
+
+.record-started {
   border-radius: 50%;
-  color: red;
-  background-color: red;
-}
-
-.record-end {
-  height: 16px;
-  width: 16px;
-  border: 1px solid;
-  color: red;
-  background-color: red;
 }
