@@ -10,11 +10,21 @@ function startUserMedia(stream) {
   var input = audio_context.createMediaStreamSource(stream);
   __log('Media stream created.');
   
-  input.connect(audio_context.destination);
-  __log('Input connected to audio context destination.');
-  
+
+  var zeroGain = audio_context.createGain();
+  zeroGain.gain.value = 0;
+  input.connect(zeroGain);
+  zeroGain.connect(audio_context.destination);
+  __log('Input connected to muted gain node connected to audio context destination.');
+
   recorder = new Recorder(input);
   __log('Recorder initialised.');
+
+  // input.connect(audio_context.destination);
+  // __log('Input connected to audio context destination.');
+  
+  // recorder = new Recorder(input);
+  // __log('Recorder initialised.');
 }
 
 function startRecording(button) {
