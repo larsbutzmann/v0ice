@@ -9,22 +9,20 @@ ul { list-style: none; }
 #recordingslist audio { display: block; margin-bottom: 10px; }
 
 #record-btn {
-  height: 128px;
-  width: 128px;
+  height: 32px;
+  width:  32px;
   border: 1px solid black;
   color: red;
   background-color: red;
 }
 
 .record-content { 
-  background: url('pics/mic.png') top left no-repeat;
+  background: url(mic.png) top left no-repeat;
   height: 128px;
-  width: 128px;
 }
 .hear-content { 
-  background: url('pics/ear.png') top left no-repeat;
+  background: url(ear.png) top left no-repeat;
   height: 128px;
-  width: 128px;
 }
 
 .record-started {
