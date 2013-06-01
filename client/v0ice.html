@@ -10,17 +10,11 @@
 </body>
 
 <template name="navi">
-  <div class="row-fluid">
-    <div class="span10 offset1">
-      <div id="menu" class="span4 offset4">
-        <nav>
-          <button id="btn-list" class="btn span3" type="button">Hear</button>
-          <button id="btn-record" class="btn span3" type="button">Record</button>
-        </nav>
-      </div>
-      <div class="span6 offset3">
-        <input class="span8" id="appendedInputButtons" type="text">
-      </div>
+  <div class="navi">
+    <div class="input-append">
+      <!--<input class="span2" id="appendedInputButtons" type="text">-->
+      <button id="btn-list" class="btn" type="button">Hear</button>
+      <button id="btn-record" class="btn" type="button">Record</button>
     </div>
   </div>
 </template>
@@ -30,48 +24,49 @@
 </template>
 
 <template name="home">
-  <div class="row">
-    <div class="span9">
-      <div class="span3 offset3">
-        {{> record}}
-        {{> hear}}
+  {{> record}}
+  <hr>
+  {{> hear}}
+</template>
+
+<template name="hear">
+  <div class="row-fluid">
+    <div class="span4 offset5">
+      <div class="hear-content">
       </div>
     </div>
   </div>
 </template>
 
-<template name="hear">
-  <div class="hear-content">
-  </div>
-</template>
-
 <template name="record">
-  <div class="record-content">
-    <p>Microphone</p>
-    <div id="record-btn" class="span4 record-started"></div>
-    <div id="recording"></div>
+  <div class="row-fluid">
+    <div class="span4 offset5">
+      <div class="input-append">
+        <div class="record-content">
+          <div id="record-btn" class="record-started"></div>
+          <div id="recording">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <template name="fileIndex">
   <div class="files">
     <table class="table table-bordered">
-     <tr>
-      <th>USER</th>
-      <th>URL</th>
-      <th>AUDIO</th>
-      <th>TIME</th>
-    </tr>
-    {{#each files}}
-    <tr>
-     <td>{{user_id}}</td>
-     <td>{{url}}</td>
-     <td>
-     	<audio controls src="{{path}}" type="audio/wave"></audio>
-     </td>
-     <td>{{timestamp}}</td>
-   </tr>
-   {{/each}}
- </table>
-</div>
+      <tr>
+        <th>ID</th>
+        <th>URL</th>
+        <th>TIME</th>
+      </tr>
+      {{#each files}}
+        <tr>
+          <td>{{id}}</td>
+          <td>{{url}}</td>
+          <td>{{timestamp}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
 </template>

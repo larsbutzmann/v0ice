@@ -6,29 +6,33 @@ body {
 
 ul { list-style: none; }
 
-#menu {
-  margin: 20px;
-}
-
-#recordingslist audio { display: block; margin-bottom: 10px; }
+#recordingslist audio { display: block; }
 
 #record-btn {
-  height: 32px;
-  width:  32px;
+  height: 64px;
+  width:  64px;
   border: 1px solid black;
   color: red;
   background-color: red;
+  margin-left: 31px;
 }
 
 .record-content { 
   background: url(mic.png) top left no-repeat;
-  height: 128px;
+  width: 128px;
+  height: 217px;
 }
+
 .hear-content { 
   background: url(ear.png) top left no-repeat;
-  height: 128px;
+  width: 128px;
+  height: 217px;
 }
 
 .record-started {
   border-radius: 50%;
+}
+
+.navi {
+  text-align: center;
 }
