@@ -45,21 +45,27 @@ function stopRecording(button) {
   recorder.clear();
 }
 
-function createDownloadLink() {
+function showFile(data) {
   recorder && recorder.exportWAV(function(blob) {
+    console.log(blob);
     var url = URL.createObjectURL(blob);
-    var li = document.createElement('li');
+    var recording = $("#recording");
     var au = document.createElement('audio');
-    var hf = document.createElement('a');
+    var btn = document.createElement('button');
     
     au.controls = true;
     au.src = url;
-    hf.href = url;
-    hf.download = new Date().toISOString() + '.wav';
-    hf.innerHTML = hf.download;
-    li.appendChild(au);
-    li.appendChild(hf);
-    recordingslist.appendChild(li);
+
+    btn.innerHTML = "Submit";
+    data.recording = blob;
+    btn.onclick = function() {
+      Files.insert(data)
+      recording.empty();
+      alert("Submitted");
+    };
+
+    recording.append(au);
+    recording.append(btn);
   });
 }
 
@@ -96,20 +102,30 @@ Template.record.events({
         console.log("record started");
       } else {
         recorder.stop();
-        file = {
-          name: ".wav",
+        meta_data = {
+          user_id: 1,
+          name: guid() + ".wav",
           url: document.URL,
           timestamp: (new Date()).getTime()
         }
-        console.log(file);
-        Meteor.call("addFile", file, function(err, result) {
-          if (result) {
-              console.log("Successfully added new record with auto_inc id " + result);
-          }
-        });
+
+        console.log(meta_data);
+        showFile(meta_data);
+
         recording_state = false;
         console.log("record stopped");
       } 
     }
   }
 });
+
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+             .toString(16)
+             .substring(1);
+};
+
+function guid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();
+}

@@ -51,7 +51,7 @@
   <div class="record-content">
     <p>Microphone</p>
     <div id="record-btn" class="span4 record-started"></div>
-    <ul id="recordingslist"></ul>
+    <div id="recording"></div>
   </div>
 </template>
 
@@ -59,14 +59,16 @@
   <div class="files">
     <table class="table table-bordered">
      <tr>
-      <th>ID</th>
+      <th>USER</th>
       <th>URL</th>
+      <th>AUDIO</th>
       <th>TIME</th>
     </tr>
     {{#each files}}
     <tr>
-     <td>{{id}}</td>
+     <td>{{user_id}}</td>
      <td>{{url}}</td>
+     <td>{{recording}}</td>
      <td>{{timestamp}}</td>
    </tr>
    {{/each}}
