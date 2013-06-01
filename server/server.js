@@ -1,7 +1,13 @@
 Meteor.startup(function () {
     console.log("Server started.");
+	Meteor.call("removeData");
 });
 
+Meteor.methods({
+    'removeData': function() {
+        Files.remove({});
+    }
+});
 
 // Lists -- {name: String}
 Files = new Meteor.Collection("files");
@@ -11,7 +17,6 @@ Meteor.publish('files', function () {
     return Files.find();
 });
 
-
 // Topics = new Meteor.Collection("topics");
 
 // // Publish all items for requested list_id.
@@ -20,10 +25,16 @@ Meteor.publish('files', function () {
 // });
 
 Meteor.methods({
-    'addFile':function(doc) {
+    'addFile': function(doc) {
         currentId = Files.findOne({},{sort:{id:-1}}).id || 1;
         doc.id = currentId + 1;
         Files.insert(doc);
         return doc.id;
+    }
+});
+
+Meteor.methods({
+    'postFile': function(blob) {
+    	console.log(blob)
     }
 });

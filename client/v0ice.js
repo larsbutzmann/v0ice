@@ -1,7 +1,7 @@
 Files = new Meteor.Collection("files");
 
 Template.files.files = function () {
-  return Files.find({}, {limit: 5, sort: {name: 1}});
+  return Files.find({}, {limit: 5});
 };
 
 Meteor.Router.add({
