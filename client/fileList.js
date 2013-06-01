@@ -1,13 +1,13 @@
 Files = new Meteor.Collection("files");
 
 Template.fileIndex.files = function () {
-	var file = [];
-  	f = Files.find({}, {limit: 10});
-  	f.forEach(function(el) {
-  		el.time = timestampToDate(el.timestamp);
-  		file.push(el);
-  	})
-    return file;
+  var file = [];
+  f = Files.find({}, {limit: 10});
+  f.forEach(function(el) {
+    el.time = timestampToDate(el.timestamp);
+    file.push(el);
+  })
+  return file;
 };
 
 function timestampToDate(timestamp) {
