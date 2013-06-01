@@ -16,8 +16,16 @@ ul { list-style: none; }
   background-color: red;
 }
 
-.record-content { }
-.hear-content { }
+.record-content { 
+  background: url('pics/mic.png') top left no-repeat;
+  height: 128px;
+  width: 128px;
+}
+.hear-content { 
+  background: url('pics/ear.png') top left no-repeat;
+  height: 128px;
+  width: 128px;
+}
 
 .record-started {
   border-radius: 50%;
