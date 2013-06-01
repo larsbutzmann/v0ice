@@ -55,18 +55,22 @@
 <template name="fileIndex">
   <div class="files">
     <table class="table table-bordered">
-      <tr>
-        <th>ID</th>
-        <th>URL</th>
-        <th>TIME</th>
-      </tr>
-      {{#each files}}
-        <tr>
-          <td>{{id}}</td>
-          <td>{{url}}</td>
-          <td>{{timestamp}}</td>
-        </tr>
-      {{/each}}
-    </table>
+     <tr>
+      <th>USER</th>
+      <th>URL</th>
+      <th>AUDIO</th>
+      <th>TIME</th>
+    </tr>
+    {{#each files}}
+    <tr>
+       <td>{{user_id}}</td>
+       <td>{{url}}</td>
+       <td>
+        <audio controls src="{{path}}" type="audio/wave"></audio>
+      </td>
+      <td>{{timestamp}}</td>
+    </tr>
+    {{/each}}
+  </table>
   </div>
 </template>
