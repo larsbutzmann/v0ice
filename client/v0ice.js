@@ -7,6 +7,12 @@ Template.navi.events({
   },
 });
 
+Template.hear.events({
+  'click .hear-content': function(){
+    Meteor.Router.to(Meteor.Router.listPath());
+  },
+});
+
 Meteor.Router.add({
   '/': 'home',
   '/list': 'list',
