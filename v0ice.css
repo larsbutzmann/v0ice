@@ -6,6 +6,10 @@ body {
 
 ul { list-style: none; }
 
+#menu {
+  margin: 20px;
+}
+
 #recordingslist audio { display: block; margin-bottom: 10px; }
 
 #record-btn {

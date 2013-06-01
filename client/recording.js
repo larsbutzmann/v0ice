@@ -64,7 +64,6 @@ function showFile(data) {
     btn.onclick = function() {
       Files.insert(data)
       recording.empty();
-      alert("Done");
     };
 
     recording.append(au);
