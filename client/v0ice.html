@@ -3,9 +3,15 @@
 </head>
 
 <body>
-  {{> mic}}
+  <div class="container">
+    {{> mic}}
+    
+  <ul id="recordingslist"></ul>
+  </div>
 </body>
 
 <template name="mic">
-  <div id="record-btn" class="record-started"></div>
+  <div class="mic-content">
+    <div id="record-btn" class="record-started"></div>
+  </div>
 </template>

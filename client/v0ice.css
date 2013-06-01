@@ -1,8 +1,10 @@
 /* CSS declarations go here */
 
-.content {
-  
+body {
+  padding-top: 40px;
 }
+
+ul { list-style: none; }
 
 #record-btn {
   height: 16px;
@@ -12,6 +14,15 @@
   background-color: red;
 }
 
+.mic-content {
+  float: none;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .record-started {
   border-radius: 50%;
 }
+
+#recordingslist audio { display: block; margin-bottom: 10px; }
