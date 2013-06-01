@@ -13,8 +13,8 @@
   <div class="navi">
     <div class="input-append">
       <!--<input class="span2" id="appendedInputButtons" type="text">-->
-      <button id="btn-list" class="btn" type="button">Hear</button>
-      <button id="btn-record" class="btn" type="button">Record</button>
+      <button id="btn-list" class="btn span3" type="button">Hear</button>
+      <button id="btn-record" class="btn span3" type="button">Record</button>
     </div>
   </div>
 </template>
@@ -42,11 +42,29 @@
   <div class="row-fluid">
     <div class="span4 offset5">
       <div class="input-append">
-        <div class="record-content">
-          <div id="record-btn" class="record-started"></div>
-          <div id="recording">
-          </div>
-        </div>
+				<!-- Div to trigger modal -->					 
+				<a href="#myModal" class="btn" data-toggle="modal">
+	        <div id="record-btn" class="record-content" data-toggle="modal">
+	          <!-- <div id="record-btn" class="record-started"></div> -->
+	        </div>
+        </a>
+				<!-- Modal -->
+				<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel">Audio Recording</h3>
+				  </div>
+				  <div class="modal-body center">
+				    <canvas id="analyser" width="400" height="200"></canvas>
+				   	<br>
+	          <div id="stop-btn"></div>
+	          <div id="recording"></div>
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn pull-left span3" data-dismiss="modal" aria-hidden="true">Cancel</button>
+				    <button id="submit-file" class="btn btn-primary pull-right span3" data-dismiss="modal">Submit</button>
+				  </div>
+				</div>
       </div>
     </div>
   </div>

@@ -26,55 +26,31 @@ function startUserMedia(stream) {
   // __log('Recorder initialised.');
 }
 
-function startRecording(button) {
-  recorder && recorder.record();
-  button.disabled = true;
-  button.nextElementSibling.disabled = false;
-  __log('Recording...');
-}
-
-function stopRecording(button) {
-  recorder && recorder.stop();
-  button.disabled = true;
-  button.previousElementSibling.disabled = false;
-  __log('Stopped recording.');
-  
-  // create WAV download link using audio data blob
-  createDownloadLink();
-  
-  recorder.clear();
-}
-
 function showFile(data) {
   recorder && recorder.exportWAV(function(blob) {
     console.log(blob);
     var url = String(URL.createObjectURL(blob));
     var recording = $("#recording");
     var au = document.createElement('audio');
-    var btn = document.createElement('button');
     
     au.controls = true;
     au.src = url;
 
-    console.log(url);
-
-    btn.innerHTML = "Submit";
     data.recording = blob;
     data.path = url;
-    btn.onclick = function() {
+    $("#submit-file")[0].onclick = function() {
       Files.insert(data)
       recording.empty();
     };
 
     recording.append(au);
-    recording.append(btn);
   });
 }
 
 Template.record.rendered = function () {
-  $('#record-btn').click(function () {
-    $(this).toggleClass("record-started");
-  });
+  // $('#record-btn').click(function () {
+  //   $(this).toggleClass("record-started");
+  // });
 
   try {
     // webkit shim
@@ -102,20 +78,25 @@ Template.record.events({
         recorder.record();
         recording_state = true;
         console.log("record started");
-      } else {
+      }
+    }
+  },
+  'click #stop-btn' : function () {
+    // template data, if any, is available in 'this'
+    if (recorder) {
+      if (recording_state === true) {
         recorder.stop();
         meta_data = {
           user_id: 1,
           url: document.URL,
           timestamp: (new Date()).getTime()
         }
-
-        console.log(meta_data);
         showFile(meta_data);
 
         recording_state = false;
         console.log("record stopped");
-      } 
+        $("#stop-btn").hide();
+      }
     }
   }
 });
