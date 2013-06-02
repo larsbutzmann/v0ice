@@ -3,6 +3,9 @@ var recorder;
 var recording_state = false;
 var analyserContext = null;
 var analyserNode = null;
+var user_id = 0;
+var recording = $("#recording");
+
 function __log(e, data) {
   console.log(e + " " + (data || ''));
 }
@@ -96,9 +99,7 @@ function startUserMedia(stream) {
 
 function showFile(data) {
   recorder && recorder.exportWAV(function(blob) {
-    console.log(blob);
     var url = String(URL.createObjectURL(blob));
-    var recording = $("#recording");
     var au = document.createElement('audio');
     
     au.controls = true;
@@ -117,10 +118,7 @@ function showFile(data) {
 }
 
 Template.record.rendered = function () {
-  // $('#record-btn').click(function () {
-  //   $(this).toggleClass("record-started");
-  // });
-
+  
   try {
     // webkit shim
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -139,45 +137,63 @@ Template.record.rendered = function () {
   });
 };
 
+var startRecording = function () {
+  if (recorder) {
+    if (recording_state !== true) {
+      recorder.clear();
+      recorder.record();
+      recording_state = true;
+      recording.empty();
+      console.log("recording started");
+    }
+  }
+}
+
+var stopRecording = function () {
+  if (recorder) {
+    if (recording_state === true) {
+      recorder.stop();
+      recording_state = false;
+      console.log("recording stopped");
+    }
+  }
+}
+
+var showRecording = function () {
+  meta_data = {
+    user_id: user_id++,
+    url: document.URL,
+    timestamp: (new Date()).getTime()
+  }
+  
+  showFile(meta_data);
+}
+
+var toggleStopBotton = function () {
+  if (recording_state) {
+    $('#stop-btn').text('Record');
+  } else {
+    $('#stop-btn').text('Stop');
+  }
+}
+
 Template.record.events({
   'click #record-btn' : function () {
     // template data, if any, is available in 'this'
-    if (recorder) {
-      if (recording_state !== true) {
-        recorder.record();
-        recording_state = true;
-        console.log("record started");
-      }
-    }
+    startRecording();
   },
   'click #stop-btn' : function () {
-    if (recorder) {
-      if (recording_state === true) {
-        recorder.stop();
-        meta_data = {
-          user_id: 1,
-          url: document.URL,
-          timestamp: (new Date()).getTime()
-        }
-        showFile(meta_data);
-
-        recording_state = false;
-        console.log("record stopped");
-        $("#stop-btn").hide();
-      }
+    if (recording_state) {
+      toggleStopBotton();
+      stopRecording();
+      showRecording();
+    } else {
+      toggleStopBotton();
+      startRecording();  
     }
   },
   'click #cancel-submit' : function () {
-    if (recorder) {
-      if (recording_state === true) {
-        recorder.stop();
-        recording_state = false;
-        console.log("record stopped");
-      }
-      recorder.clear();
-      $("#recording").empty();
-      $("#stop-btn").show();      
-      console.log($("#recording"));
-    }
+    stopRecording();
+    $("#recording").empty();
   }
 });
