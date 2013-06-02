@@ -5,15 +5,6 @@ var analyserContext = null;
 var analyserNode = null;
 var user_id = 1;
 
-var plugins_option = {
-  title: "Question",
-  content: "Do you want to give feedback?",
-  placement: "left",
-  trigger: "hover"
-};
-
-// $('#record-btn').popover(plugins_option);
-
 if (!('webkitSpeechRecognition' in window)) {
   console.log("upgrade");
 } else {
