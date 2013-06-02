@@ -2,7 +2,7 @@
 
 body {
   padding-top: 40px;
-  background: url(eshop.jpg) top left no-repeat;
+  background: url(eshop.jpg) top right no-repeat;
 }
 
 ul { list-style: none; }
@@ -15,8 +15,9 @@ canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px bl
 
 #header-analytics {
   color: white;
+  font-size: 5em;
   font-family: "Comic Sans MS";
-  margin: 20px;
+  margin-bottom: 60px;
 }
 
 .custom-modal {
@@ -32,8 +33,11 @@ canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px bl
 
 #plugin {
   position: fixed;
-  top: 1em;
+  top: 20em;
   right: 1em;
+  border:2px solid;
+  border-radius:25px;
+  background: orange;
 }
 
 #stop-btn {
@@ -44,7 +48,7 @@ canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px bl
   background: url(mic.png) top left no-repeat;
   width: 128px;
   height: 128px;
-  background-color: red;
+  background-color: orange;
 }
 
 .hear-content { 
