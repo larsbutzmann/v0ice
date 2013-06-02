@@ -32,7 +32,7 @@ canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px bl
 
 #plugin {
   position: fixed;
-  top: 1em;
+  top: 20em;
   right: 1em;
 }
 
