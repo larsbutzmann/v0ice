@@ -3,6 +3,8 @@ var recorder;
 var recording_state = false;
 var analyserContext = null;
 var analyserNode = null;
+var user_id = 0;
+var recording = $("#recording");
 
 if (!('webkitSpeechRecognition' in window)) {
   console.log("upgrade");
@@ -34,61 +36,66 @@ function __log(e, data) {
   console.log(e + " " + (data || ''));
 }
 
+function drawWave( buffer ) {
+  var canvas = document.getElementById( "wavedisplay" );
+  drawBuffer( canvas.width, canvas.height, canvas.getContext('2d'), buffer );
+}
+
 function drawBuffer( width, height, context, data ) {
-    var step = Math.ceil( data.length / width );
-    var amp = height / 2;
-    context.fillStyle = "silver";
-    for(var i=0; i < width; i++){
-        var min = 1.0;
-        var max = -1.0;
-        for (j=0; j<step; j++) {
-            var datum = data[(i*step)+j]; 
-            if (datum < min)
-                min = datum;
-            if (datum > max)
-                max = datum;
-        }
-        context.fillRect(i,(1+min)*amp,1,Math.max(1,(max-min)*amp));
+  var step = Math.ceil( data.length / width );
+  var amp = height / 2;
+  context.fillStyle = "silver";
+  for(var i=0; i < width; i++){
+    var min = 1.0;
+    var max = -1.0;
+    for (j=0; j<step; j++) {
+      var datum = data[(i*step)+j]; 
+      if (datum < min)
+        min = datum;
+      if (datum > max)
+        max = datum;
     }
+    context.fillRect(i,(1+min)*amp,1,Math.max(1,(max-min)*amp));
+  }
 }
 
 function updateAnalysers(time) {
-    if (!analyserContext) {
-        var canvas = document.getElementById("analyser");
-        canvasWidth = canvas.width;
-        canvasHeight = canvas.height;
-        analyserContext = canvas.getContext('2d');
+  if (!analyserContext) {
+      var canvas = document.getElementById("analyser");
+      canvasWidth = canvas.width;
+      canvasHeight = canvas.height;
+      analyserContext = canvas.getContext('2d');
+  }
+
+  // analyzer draw code here
+  {
+    var SPACING = 3;
+    var BAR_WIDTH = 1;
+    var numBars = Math.round(canvasWidth / SPACING);
+    var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
+
+    analyserNode.getByteFrequencyData(freqByteData); 
+
+    analyserContext.clearRect(0, 0, canvasWidth, canvasHeight);
+    analyserContext.fillStyle = '#F6D565';
+    analyserContext.lineCap = 'round';
+    var multiplier = analyserNode.frequencyBinCount / numBars;
+
+    // Draw rectangle for each frequency bin.
+    for (var i = 0; i < numBars; ++i) {
+      var magnitude = 0;
+      var offset = Math.floor( i * multiplier );
+      // gotta sum/average the block, or we miss narrow-bandwidth spikes
+      for (var j = 0; j< multiplier; j++)
+        magnitude += freqByteData[offset + j];
+      magnitude = magnitude / multiplier;
+      var magnitude2 = freqByteData[i * multiplier];
+      analyserContext.fillStyle = "hsl( " + Math.round((i*360)/numBars) + ", 100%, 50%)";
+      analyserContext.fillRect(i * SPACING, canvasHeight, BAR_WIDTH, -magnitude);
     }
-
-    // analyzer draw code here
-    {
-        var SPACING = 3;
-        var BAR_WIDTH = 1;
-        var numBars = Math.round(canvasWidth / SPACING);
-        var freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
-
-        analyserNode.getByteFrequencyData(freqByteData); 
-
-        analyserContext.clearRect(0, 0, canvasWidth, canvasHeight);
-        analyserContext.fillStyle = '#F6D565';
-        analyserContext.lineCap = 'round';
-        var multiplier = analyserNode.frequencyBinCount / numBars;
-
-        // Draw rectangle for each frequency bin.
-        for (var i = 0; i < numBars; ++i) {
-            var magnitude = 0;
-            var offset = Math.floor( i * multiplier );
-            // gotta sum/average the block, or we miss narrow-bandwidth spikes
-            for (var j = 0; j< multiplier; j++)
-                magnitude += freqByteData[offset + j];
-            magnitude = magnitude / multiplier;
-            var magnitude2 = freqByteData[i * multiplier];
-            analyserContext.fillStyle = "hsl( " + Math.round((i*360)/numBars) + ", 100%, 50%)";
-            analyserContext.fillRect(i * SPACING, canvasHeight, BAR_WIDTH, -magnitude);
-        }
-    }
-    
-    rafID = window.webkitRequestAnimationFrame( updateAnalysers );
+  }
+  
+  rafID = window.webkitRequestAnimationFrame( updateAnalysers );
 }
 
 function startUserMedia(stream) {
@@ -122,9 +129,7 @@ function startUserMedia(stream) {
 
 function showFile(data) {
   recorder && recorder.exportWAV(function(blob) {
-    console.log(blob);
     var url = String(URL.createObjectURL(blob));
-    var recording = $("#recording");
     var au = document.createElement('audio');
 
     // Recorder.forceDownload(blob, "test.wav");
@@ -146,10 +151,7 @@ function showFile(data) {
 }
 
 Template.record.rendered = function () {
-  // $('#record-btn').click(function () {
-  //   $(this).toggleClass("record-started");
-  // });
-
+  
   try {
     // webkit shim
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -168,50 +170,63 @@ Template.record.rendered = function () {
   });
 };
 
+var startRecording = function () {
+  if (recorder) {
+    if (recording_state !== true) {
+      recorder.clear();
+      recorder.record();
+      recording_state = true;
+      recording.empty();
+      console.log("recording started");
+    }
+  }
+}
+
+var stopRecording = function () {
+  if (recorder) {
+    if (recording_state === true) {
+      recorder.stop();
+      recording_state = false;
+      console.log("recording stopped");
+    }
+  }
+}
+
+var showRecording = function () {
+  meta_data = {
+    user_id: user_id++,
+    url: document.URL,
+    timestamp: (new Date()).getTime()
+  }
+  
+  showFile(meta_data);
+}
+
+var toggleStopBotton = function () {
+  if (recording_state) {
+    $('#stop-btn').text('Record');
+  } else {
+    $('#stop-btn').text('Stop');
+  }
+}
+
 Template.record.events({
   'click #record-btn' : function () {
     // template data, if any, is available in 'this'
-    if (recorder) {
-      if (recording_state !== true) {
-        recorder.record();
-        recognition.start();
-        recording_state = true;
-        console.log("record started");
-      }
-    }
+    startRecording();
   },
   'click #stop-btn' : function () {
-    if (recorder) {
-      if (recording_state === true) {
-        recognition.stop()
-        recorder.stop();
-
-        meta_data = {
-          user_id: 1,
-          url: document.URL,
-          text: "No text detected",
-          timestamp: (new Date()).getTime()
-        }
-
-        showFile(meta_data);
-
-        recording_state = false;
-        console.log("record stopped");
-        $("#stop-btn").hide();
-      }
+    if (recording_state) {
+      toggleStopBotton();
+      stopRecording();
+      showRecording();
+    } else {
+      toggleStopBotton();
+      startRecording();  
     }
   },
   'click #cancel-submit' : function () {
-    if (recorder) {
-      if (recording_state === true) {
-        recorder.stop();
-        recording_state = false;
-        console.log("record stopped");
-      }
-      recorder.clear();
-      $("#recording").empty();
-      $("#stop-btn").show();      
-      console.log($("#recording"));
-    }
+    stopRecording();
+    $("#recording").empty();
   }
 });

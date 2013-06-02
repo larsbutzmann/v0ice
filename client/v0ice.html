@@ -12,9 +12,9 @@
 <template name="navi">
   <div class="navi">
     <div class="input-append">
-      <!--<input class="span2" id="appendedInputButtons" type="text">-->
-      <button id="btn-list" class="btn span3" type="button">Hear</button>
-      <button id="btn-record" class="btn span3" type="button">Record</button>
+      <!-- <button id="btn-list" class="btn span3" type="button">Hear</button> -->
+      <!-- <input class="span2" id="appendedInputButtons" type="text"> -->
+      <!-- <button id="btn-record" class="btn span3" type="button">Record</button> -->
     </div>
   </div>
 </template>
@@ -25,8 +25,6 @@
 
 <template name="home">
   {{> record}}
-  <hr>
-  {{> hear}}
 </template>
 
 <template name="hear">
@@ -43,14 +41,14 @@
 <template name="record">
   <div class="row-fluid">
     <div class="span4 offset5">
-      <div class="input-append">
+      <!-- <div class="input-append"> -->
         <!-- Div to trigger modal -->					 
         <a href="#myModal" class="btn" data-toggle="modal">
          <div id="record-btn" class="record-content" data-toggle="modal">
            <!-- <div id="record-btn" class="record-started"></div> -->
          </div>
        </a>
-     </div>
+     <!-- </div> -->
      <!-- Modal -->
      <div id="myModal" class="modal custom-modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
@@ -59,14 +57,13 @@
       </div>
       <div class="modal-body center">
         <canvas id="analyser" width="768" height="200"></canvas><br>
-        <canvas id="wavedisplay" width="768" height="200"></canvas><br>
         <br>
-        <div id="stop-btn"></div>
         <div id="recording"></div>
       </div>
       <div class="modal-footer">
-        <button class="btn pull-left span3" data-dismiss="modal" aria-hidden="true">Cancel</button>
-        <button id="submit-file" class="btn btn-primary pull-right span3" data-dismiss="modal">Submit</button>
+        <button class="btn pull-left btn-danger span3" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button id="stop-btn" class="btn btn-inverse span2"  aria-hidden="true">Stop</button>
+        <button id="submit-file" class="btn btn-success pull-right span3" data-dismiss="modal">Submit</button>
       </div>
     </div>
   </div>

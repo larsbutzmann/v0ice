@@ -2,6 +2,7 @@
 
 body {
   padding-top: 40px;
+  background: url(bg.jpg) top left no-repeat;
 }
 
 ul { list-style: none; }
@@ -12,40 +13,40 @@ h1, h2, h3, h4, h5, h6 {
 
 canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px black; }
 
-td {
-  text-align: center;
-}
-
 .custom-modal {
   top: 20px;
   width: 800px;
 }
 
-.center {
-  text-align: center;
-}
-
 #recordingslist audio { display: block; }
 
+#myModal {
+  margin-left: -650px;
+  margin-top: 150px;
+}
+
 #stop-btn {
-  height: 64px;
-  width:  64px;
-  border: 1px solid black;
-  color: red;
-  background-color: red;
-  margin-left: 31px;
+  margin-left: 136px;
 }
 
 .record-content { 
   background: url(mic.png) top left no-repeat;
   width: 128px;
-  height: 217px;
+  height: 128px;
 }
 
 .hear-content { 
   background: url(ear.png) top left no-repeat;
   width: 128px;
   height: 217px;
+}
+
+.custom-modal {
+  width: 800px;
+}
+
+.center {
+  text-align: center;
 }
 
 .record-started {
