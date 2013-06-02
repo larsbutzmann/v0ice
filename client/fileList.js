@@ -11,6 +11,10 @@ Template.fileIndex.files = function () {
   return file;
 };
 
+Template.fileIndex.created = function () {
+  $("body").css({"background": "url(bg.jpg) top left no-repeat"});
+};
+
 function timestampToDate(timestamp) {
     var d = new Date(timestamp);
     var curr_date = d.getDate();

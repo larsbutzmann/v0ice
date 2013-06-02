@@ -2,7 +2,7 @@
 
 body {
   padding-top: 40px;
-  background: url(bg.jpg) top left no-repeat;
+  background: url(eshop.jpg) top left no-repeat;
 }
 
 ul { list-style: none; }
@@ -13,6 +13,12 @@ h1, h2, h3, h4, h5, h6 {
 
 canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px black; }
 
+#header-analytics {
+  color: white;
+  font-family: "Comic Sans MS";
+  margin: 20px;
+}
+
 .custom-modal {
   top: 20px;
   width: 800px;
@@ -20,9 +26,14 @@ canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px bl
 
 #recordingslist audio { display: block; }
 
-#myModal {
-  margin-left: -650px;
-  margin-top: 150px;
+#file-list {
+  background: white;
+}
+
+#plugin {
+  position: fixed;
+  top: 1em;
+  right: 1em;
 }
 
 #stop-btn {
@@ -33,6 +44,7 @@ canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px bl
   background: url(mic.png) top left no-repeat;
   width: 128px;
   height: 128px;
+  background-color: red;
 }
 
 .hear-content { 

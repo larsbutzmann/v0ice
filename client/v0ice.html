@@ -43,8 +43,8 @@
     <div class="span4 offset5">
       <!-- <div class="input-append"> -->
         <!-- Div to trigger modal -->					 
-        <a href="#myModal" class="btn" data-toggle="modal">
-         <div id="record-btn" class="record-content" data-toggle="modal">
+        <a href="#myModal" id="plugin" class="btn" data-toggle="modal">
+         <div id="recording-btn" class="record-content" data-toggle="modal">
            <!-- <div id="record-btn" class="record-started"></div> -->
          </div>
        </a>
@@ -53,10 +53,10 @@
      <div id="myModal" class="modal custom-modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Audio Recording</h3>
+        <h3 id="myModalLabel">Record Feedback</h3>
       </div>
       <div class="modal-body center">
-        <canvas id="analyser" width="768" height="200"></canvas><br>
+        <canvas id="analyser" width="768" height="200"></canvas>
         <br>
         <div id="recording"></div>
       </div>
@@ -71,8 +71,9 @@
 </template>
 
 <template name="fileIndex">
+  <h1 id="header-analytics">Analytics</h1>
   <div class="files">
-    <table class="table table-bordered">
+    <table id="file-list" class="table table-bordered">
       <tr>
         <th>USER</th>
         <th>URL</th>

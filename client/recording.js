@@ -4,7 +4,6 @@ var recording_state = false;
 var analyserContext = null;
 var analyserNode = null;
 var user_id = 0;
-var recording = $("#recording");
 
 if (!('webkitSpeechRecognition' in window)) {
   console.log("upgrade");
@@ -17,7 +16,6 @@ if (!('webkitSpeechRecognition' in window)) {
 }
 
 recognition.onresult = function(event) {
-  console.log(event);
   if (typeof(event.results) == 'undefined') {
     return;
   }
@@ -29,6 +27,7 @@ recognition.onresult = function(event) {
   }
   file = Files.find({}, {sort: {timestamp: -1}}).fetch()[0];
   file.text = final_transcript;
+  console.log(final_transcript);
   Files.update(file._id, file);
 };
 
@@ -127,29 +126,6 @@ function startUserMedia(stream) {
   // __log('Recorder initialised.');
 }
 
-function showFile(data) {
-  recorder && recorder.exportWAV(function(blob) {
-    var url = String(URL.createObjectURL(blob));
-    var au = document.createElement('audio');
-
-    // Recorder.forceDownload(blob, "test.wav");
-    
-    au.controls = true;
-    au.src = url;
-
-    data.recording = blob;
-    data.path = url;
-    Files.insert(data);
-
-    $("#submit-file")[0].onclick = function() {
-      recording.empty();
-      $("#stop-btn").show();
-    };
-
-    recording.append(au);
-  });
-}
-
 Template.record.rendered = function () {
   
   try {
@@ -170,13 +146,38 @@ Template.record.rendered = function () {
   });
 };
 
+function showFile(data) {
+  recorder && recorder.exportWAV(function(blob) {
+    var url = String(URL.createObjectURL(blob));
+    var au = document.createElement('audio');
+    var recording = $("#recording");
+    
+    au.controls = true;
+    au.src = url;
+
+    data.recording = blob;
+    data.path = url;
+    Files.insert(data);
+
+    $("#submit-file")[0].onclick = function() {
+      recording.empty();
+      $("#stop-btn").show();
+    };
+    console.log(recording);
+    console.log(au);
+    recording.append(au);
+  });
+}
+
 var startRecording = function () {
   if (recorder) {
     if (recording_state !== true) {
       recorder.clear();
+      recognition.start();
       recorder.record();
       recording_state = true;
-      recording.empty();
+      $("#recording").empty();
+      $('#stop-btn').text('Stop');
       console.log("recording started");
     }
   }
@@ -185,6 +186,7 @@ var startRecording = function () {
 var stopRecording = function () {
   if (recorder) {
     if (recording_state === true) {
+      recognition.stop();
       recorder.stop();
       recording_state = false;
       console.log("recording stopped");
@@ -195,6 +197,7 @@ var stopRecording = function () {
 var showRecording = function () {
   meta_data = {
     user_id: user_id++,
+    text: "No text detected",
     url: document.URL,
     timestamp: (new Date()).getTime()
   }
@@ -216,12 +219,11 @@ Template.record.events({
     startRecording();
   },
   'click #stop-btn' : function () {
+    toggleStopBotton();
     if (recording_state) {
-      toggleStopBotton();
       stopRecording();
       showRecording();
     } else {
-      toggleStopBotton();
       startRecording();  
     }
   },
