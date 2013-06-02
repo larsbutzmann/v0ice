@@ -127,7 +127,12 @@ function startUserMedia(stream) {
 }
 
 Template.record.rendered = function () {
-  
+  $('#plugin').popover({
+    trigger: 'hover',
+    placement: 'left',
+    content: "Don't hesitate to give us your voice. Your feedback is heard!"
+  });
+
   try {
     // webkit shim
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
