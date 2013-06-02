@@ -12,7 +12,12 @@ h1, h2, h3, h4, h5, h6 {
 
 canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px black; }
 
+td {
+  text-align: center;
+}
+
 .custom-modal {
+  top: 20px;
   width: 800px;
 }
 

@@ -79,15 +79,19 @@
       <tr>
         <th>USER</th>
         <th>URL</th>
+        <th>TEXT</th>
         <th>AUDIO</th>
+        <th>TIME</th>
         <th>DATE</th>
       </tr>
       {{#each files}}
         <tr>
           <td>{{user_id}}</td>
           <td>{{url}}</td>
+          <td>{{text}}</td>
           <td><audio controls src="{{path}}" type="audio/wav"></audio></td>
           <td>{{time}}</td>
+          <td>{{date}}</td>
         </tr>
       {{/each}}
     </table>

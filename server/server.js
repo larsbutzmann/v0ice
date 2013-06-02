@@ -17,6 +17,12 @@ Meteor.publish('files', function () {
     return Files.find();
 });
 
+Customers = new Meteor.Collection("customers");
+
+Meteor.publish('customers', function () {
+    return Customers.find();
+});
+
 // Topics = new Meteor.Collection("topics");
 
 // // Publish all items for requested list_id.
@@ -25,16 +31,36 @@ Meteor.publish('files', function () {
 // });
 
 Meteor.methods({
-    'addFile': function(doc) {
-        currentId = Files.findOne({},{sort:{id:-1}}).id || 1;
+    addFile: function(doc) {
+    	var currentId;
+
+    	console.log(doc);
+    	if (Files.findOne({},{sort:{id:-1}}) !== "undefined") {
+    		currentId = Files.findOne({},{sort:{id:-1}}).id
+    	} else {
+    		currentId = 1;
+    	}
         doc.id = currentId + 1;
+    	console.log(doc);
         Files.insert(doc);
         return doc.id;
     }
 });
 
 Meteor.methods({
-    'postFile': function(blob) {
-    	console.log(blob)
+    getCustomer: function(identification) {
+        customer = Customers.findOne({identification: identification}) || 1;
+        if (customer !== "undefined") {
+        	console.log("customer available");
+        	return customer.id;
+        } else {
+	        currentId = Customers.findOne({},{sort:{id:-1}}).id || 1;
+	        var newID = currentId + 1;
+        	Customers.insert({
+        		id: newID,
+        		identification: identification
+        	});
+        	return newID
+        }
     }
 });

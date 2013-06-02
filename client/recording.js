@@ -3,6 +3,33 @@ var recorder;
 var recording_state = false;
 var analyserContext = null;
 var analyserNode = null;
+
+if (!('webkitSpeechRecognition' in window)) {
+  console.log("upgrade");
+} else {
+  var recognition = new webkitSpeechRecognition();
+  var final_transcript = "";
+  recognition.continuous = true;
+  recognition.interimResults = false;
+  recognition.lang = "en-US";
+}
+
+recognition.onresult = function(event) {
+  console.log(event);
+  if (typeof(event.results) == 'undefined') {
+    return;
+  }
+  for (var i = event.resultIndex; i < event.results.length; ++i) {
+    if (event.results[i].isFinal) {
+      final_transcript = event.results[i][0].transcript;
+      console.log("OUTPUT: " + final_transcript);
+    }
+  }
+  file = Files.find({}, {sort: {timestamp: -1}}).fetch()[0];
+  file.text = final_transcript;
+  Files.update(file._id, file);
+};
+
 function __log(e, data) {
   console.log(e + " " + (data || ''));
 }
@@ -79,7 +106,11 @@ function startUserMedia(stream) {
 
   updateAnalysers();
 
-  recorder = new Recorder(input);
+  var config = {
+    type: "audio/wav"
+  }
+
+  recorder = new Recorder(input, config);
   __log('Recorder initialised.');
 
   // input.connect(audio_context.destination);
@@ -96,15 +127,16 @@ function showFile(data) {
     var recording = $("#recording");
     var au = document.createElement('audio');
 
-    Recorder.forceDownload(blob);
+    // Recorder.forceDownload(blob, "test.wav");
     
     au.controls = true;
     au.src = url;
 
     data.recording = blob;
     data.path = url;
+    Files.insert(data);
+
     $("#submit-file")[0].onclick = function() {
-      Files.insert(data)
       recording.empty();
       $("#stop-btn").show();
     };
@@ -142,6 +174,7 @@ Template.record.events({
     if (recorder) {
       if (recording_state !== true) {
         recorder.record();
+        recognition.start();
         recording_state = true;
         console.log("record started");
       }
@@ -150,12 +183,16 @@ Template.record.events({
   'click #stop-btn' : function () {
     if (recorder) {
       if (recording_state === true) {
+        recognition.stop()
         recorder.stop();
+
         meta_data = {
           user_id: 1,
           url: document.URL,
+          text: "No text detected",
           timestamp: (new Date()).getTime()
         }
+
         showFile(meta_data);
 
         recording_state = false;
