@@ -3,7 +3,16 @@ var recorder;
 var recording_state = false;
 var analyserContext = null;
 var analyserNode = null;
-var user_id = 0;
+var user_id = 1;
+
+var plugins_option = {
+  title: "Question",
+  content: "Do you want to give feedback?",
+  placement: "left",
+  trigger: "hover"
+};
+
+// $('#record-btn').popover(plugins_option);
 
 if (!('webkitSpeechRecognition' in window)) {
   console.log("upgrade");
@@ -163,8 +172,7 @@ function showFile(data) {
       recording.empty();
       $("#stop-btn").show();
     };
-    console.log(recording);
-    console.log(au);
+
     recording.append(au);
   });
 }
@@ -197,8 +205,8 @@ var stopRecording = function () {
 var showRecording = function () {
   meta_data = {
     user_id: user_id++,
-    text: "No text detected",
-    url: document.URL,
+    text: "----------------",
+    url: "zalando.nk/", //document.URL,
     timestamp: (new Date()).getTime()
   }
   
@@ -224,11 +232,15 @@ Template.record.events({
       stopRecording();
       showRecording();
     } else {
+      file = Files.find({}, {sort: {timestamp: -1}}).fetch()[0];
+      Files.remove(file._id);
       startRecording();  
     }
   },
   'click #cancel-submit' : function () {
     stopRecording();
     $("#recording").empty();
+    file = Files.find({}, {sort: {timestamp: -1}}).fetch()[0];
+    Files.remove(file._id);
   }
 });

@@ -1,6 +1,6 @@
 Meteor.startup(function () {
     console.log("Server started.");
-	// Meteor.call("removeData");
+	Meteor.call("removeData");
 });
 
 Meteor.methods({
