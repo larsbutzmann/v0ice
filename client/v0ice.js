@@ -19,12 +19,6 @@ Meteor.Router.add({
   '/record': 'record'
 });
 
-$('#recording-btn').popover({
-  trigger: 'hover',
-  placement: 'left',
-  content: "Don't hesitate to give us your voice. Your feedback is heard!"
-});
-
 Template.body.helpers({
   layoutName: function() {
     switch (Meteor.Router.page()) {
